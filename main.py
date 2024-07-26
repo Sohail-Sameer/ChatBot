@@ -1,77 +1,80 @@
-import pyttsx3
-from datetime import datetime
+import datetime
 import webbrowser
 import random
-
-engine = pyttsx3.init()
-
-
-def tts(input_text):
-    # Initialize the TTS engine
-    engine.say(input_text)
+import pyttsx3
 
 
-def curtime():
-    # Get the current time
-    now = datetime.now()
-
-    # Format the time in 24-hour format
-    formatted_time = now.strftime("%H:%M:%S")
-
-    # Print the formatted time
-    print("Current Time in 24-hour format:", formatted_time)
-
-
-def display_time_with_greeting():
-    # Get the current time
-    now = datetime.now()
-
-    # Format the time in 24-hour format
-    formatted_time = now.strftime("%H:%M:%S")
-
-    # Print the formatted time
-    print("Current Time in 24-hour format:", formatted_time)
-
-    # Determine the appropriate greeting based on the time
-    hour = now.hour
-    if 5 <= hour < 12:
-        tts("Good Morning sir")
-        tts("How may I help you?")
-    elif 12 <= hour < 17:
-        tts("Good Afternoon sir")
-        tts("How may I help you?")
-    elif 17 <= hour < 0:
-        tts("Good Evening sir")
-        tts("How may I help you?")
+def greet():
+    current_hour = datetime.datetime.now().hour
+    if current_hour < 12:
+        greeting = "Good Morning Sir!"
+    elif 12 <= current_hour < 18:
+        greeting = "Good Afternoon Sir!"
     else:
-        tts("Good Midnight sir")
-        tts("How may I help you?")
+        greeting = "Good Evening Sir!"
+    return greeting
 
 
-greetings = ["hello", "hi", "sup", "hey", "wassup", "heya"]
-request = input("Input the text you want to convert to speech: ")
-request = request.lower()
+def random_open_link():
+    links = [
+        "quickdraw.withgoogle.com",
+        "elevenlabs.io",
+        "teachable-snake.netlify.app",
+        "musiclab.chromeexperiments.com/Song-Maker",
+        "lexica.art",
+        "research.google.com/semantris",
+        "g.co/arts/2WST2Pqi1fXRq1kbA"
+    ]
 
-for request in greetings:
-    curtime()
-    display_time_with_greeting()
-    request = input("Input the text you want to convert to speech: ")
-    if request.lower in ["open link", "open", "search"]:
-        req1 = input("Type the website number you want to visit:"
-                     "1.YouTube"
-                     "2.Google"
-                     "3.ChatGPT"
-                     "4.Random ")
-        if req1 == "youtube" or '1':
-            webbrowser.open_new_tab("https://youtube.com")
-        if req1 == "google" or '2':
-            webbrowser.open_new_tab("https://google.com")
-        if req1 == "chatgpt" or '3':
-            webbrowser.open_new_tab("https://chat.openai.com")
-        if req1 == "random" or '4':
-            webbrowser.open_new_tab(random.choice(["https://quickdraw.withgoogle.com/", "https://elevenlabs.io/",
-                                                   "https://teachable-snake.netlify.app/",
-                                                   "https://musiclab.chromeexperiments.com/Song-Maker",
-                                                   "https://lexica.art/", "https://research.google.com/semantris/",
-                                                   "https://g.co/arts/2WST2Pqi1fXRq1kbA"]))
+    # Open a random link
+    link_to_open = random.choice(links)
+    webbrowser.open(link_to_open)
+    return f"Opening {link_to_open}"
 
+
+def open_link():
+    youtube = 'youtube.com'
+    google = 'google.com'
+    chatgpt = 'chat.openai.com'
+    print("1) YouTube")
+    print("2) Google")
+    print("3) ChatGPT")
+    link_input = input("Enter the link number(1/2/3): ")
+    if link_input == '1':
+        webbrowser.open(youtube)
+        return f"Opening {youtube}"
+    elif link_input == '2':
+        webbrowser.open(google)
+        return f"Opening {google}"
+    elif link_input == '3':
+        webbrowser.open(chatgpt)
+        return f"Opening {chatgpt}"
+    else:
+        print("Enter a valid response")
+        return "Enter a valid response"
+
+
+# Main Program
+print(greet())
+pyttsx3.speak(greet())
+
+
+print("Choose the function")
+pyttsx3.speak("Choose the function")
+print("1) Open Link")
+print("2) Open Random Link")
+usr_input = input("Enter 1/2: ")
+
+if usr_input == '1':
+    pyttsx3.speak(open_link())
+elif usr_input == '2':
+    pyttsx3.speak("Do you want to open a random link?")
+    user_input = input("Do you want to open a random link? (yes/no): ").strip().lower()
+    if user_input == "yes" or "y" or "yeah":
+        pyttsx3.speak(random_open_link())
+    else:
+        print("Okay sir, no link will be opened.")
+        pyttsx3.speak("Okay sir, no link will be opened.")
+else:
+    print("Enter a valid response from the dropdown")
+    pyttsx3.speak("Enter a valid response from the dropdown")
