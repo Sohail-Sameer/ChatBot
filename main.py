@@ -59,7 +59,7 @@ def plot_quadratic():
         y1, y2 = np.imag(x1), np.imag(x2)
         x1, x2 = np.real(x1), np.real(x2)
 
-    x_intercepts = [(x1, 0), (x2, 0)]
+    # x_intercepts = [(x1, 0), (x2, 0)]
 
     plt.plot(x, y, label=f'{a}x^2 + {b}x + {c}')
     plt.scatter([x1, x2], [y1, y2], color='red', label='X-Intercepts')
@@ -70,7 +70,7 @@ def plot_quadratic():
     plt.ylabel("y")
     plt.grid(True)
     plt.legend()
-    plt.show()
+    return plt
 
 
 def plot_linear():
@@ -101,7 +101,7 @@ def plot_linear():
     plt.ylabel("y")
     plt.grid(True)
     plt.legend()
-    plt.show()
+    return plt
 
 
 def greet():
@@ -159,81 +159,83 @@ print(greet())
 pyttsx3.speak(greet())
 
 
-print("Choose the function")
-pyttsx3.speak("Choose the function")
-print("1) Open Link")
-print("2) Open Random Link")
-print("3) Calculator")
-usr_input = input("Enter 1/2/3: ")
+while True:
+    print("Choose the function")
+    pyttsx3.speak("Choose the function")
+    print("1) Open Link")
+    print("2) Open Random Link")
+    print("3) Calculator")
+    usr_input = input("Enter 1/2/3: ")
 
-if usr_input == '1':
-    pyttsx3.speak(open_link())
-elif usr_input == '2':
-    pyttsx3.speak("Do you want to open a random link?")
-    user_input = input("Do you want to open a random link? (yes/no): ").strip().lower()
-    if user_input == "yes" or "y" or "yeah":
-        pyttsx3.speak(random_open_link())
-    else:
-        print("Okay sir, no link will be opened.")
-        pyttsx3.speak("Okay sir, no link will be opened.")
-elif usr_input == '3':
-    print("Select operation:")
-    print("1. Add")
-    print("2. Subtract")
-    print("3. Multiply")
-    print("4. Divide")
-    print("5. Square")
-    print("6. Cube")
-    print("7. Exponential")
-    print("8. Plot Quadratic Equation")
-    print("9. Linear Equation in Two Variables")
-
-    pyttsx3.speak("Enter your choice")
-    choice = input("Enter choice (1/2/3/4/5/6/7/8/9): ")
-
-    if choice in ('1', '2', '3', '4', '5', '6'):
-        pyttsx3.speak("Enter your first number")
-        num1 = float(input("Enter first number: "))
-        if choice in ('5', '6'):
-            if choice == '5':
-                pyttsx3.speak(f"The Result is {square(num1)}")
-                print("Result:", square(num1))
-            else:
-                pyttsx3.speak(f"The Result is {cube(num1)}")
-                print("Result:", cube(num1))
+    if usr_input == '1':
+        pyttsx3.speak(open_link())
+    elif usr_input == '2':
+        pyttsx3.speak("Do you want to open a random link?")
+        user_input = input("Do you want to open a random link? (yes/no): ").strip().lower()
+        if user_input in ["yes", "y", "yeah"]:
+            pyttsx3.speak(random_open_link())
         else:
-            pyttsx3.speak("Enter your second number")
-            num2 = float(input("Enter second number: "))
+            print("Okay sir, no link will be opened.")
+            pyttsx3.speak("Okay sir, no link will be opened.")
+    elif usr_input == '3':
+        print("Select operation:")
+        print("1. Add")
+        print("2. Subtract")
+        print("3. Multiply")
+        print("4. Divide")
+        print("5. Square")
+        print("6. Cube")
+        print("7. Exponential")
+        print("8. Plot Quadratic Equation")
+        print("9. Linear Equation in Two Variables")
 
-            if choice == '1':
-                pyttsx3.speak(f"The Result is {add(num1, num2)}")
-                print("Result:", add(num1, num2))
-            elif choice == '2':
-                pyttsx3.speak(f"The Result is {subtract(num1, num2)}")
-                print("Result:", subtract(num1, num2))
-            elif choice == '3':
-                pyttsx3.speak(f"The Result is {multiply(num1, num2)}")
-                print("Result:", multiply(num1, num2))
-            elif choice == '4':
-                pyttsx3.speak(f"The Result is {divide(num1, num2)}")
-                print("Result:", divide(num1, num2))
-    elif choice == '7':
-        pyttsx3.speak("Enter the base number, x")
-        num1 = float(input("Enter the base number (x): "))
-        pyttsx3.speak("Enter the exponent, n")
-        num2 = float(input("Enter the exponent (n): "))
-        pyttsx3.speak(f"The Result is {exponential(num1, num2)}")
-        print("Result:", exponential(num1, num2))
-    elif choice == '8':
-        plot_quadratic()
-        pyttsx3.speak("Quadratic Equation Plotted")
-    elif choice == '9':
-        plot_linear()
-        pyttsx3.speak("Linear Equation Plotted")
+        pyttsx3.speak("Enter your choice")
+        choice = input("Enter choice (1/2/3/4/5/6/7/8/9): ")
+
+        if choice in ('1', '2', '3', '4', '5', '6'):
+            pyttsx3.speak("Enter your first number")
+            num1 = float(input("Enter first number: "))
+            if choice in ('5', '6'):
+                if choice == '5':
+                    pyttsx3.speak(f"The Result is {square(num1)}")
+                    print("Result:", square(num1))
+                else:
+                    pyttsx3.speak(f"The Result is {cube(num1)}")
+                    print("Result:", cube(num1))
+            else:
+                pyttsx3.speak("Enter your second number")
+                num2 = float(input("Enter second number: "))
+
+                if choice == '1':
+                    pyttsx3.speak(f"The Result is {add(num1, num2)}")
+                    print("Result:", add(num1, num2))
+                elif choice == '2':
+                    pyttsx3.speak(f"The Result is {subtract(num1, num2)}")
+                    print("Result:", subtract(num1, num2))
+                elif choice == '3':
+                    pyttsx3.speak(f"The Result is {multiply(num1, num2)}")
+                    print("Result:", multiply(num1, num2))
+                elif choice == '4':
+                    pyttsx3.speak(f"The Result is {divide(num1, num2)}")
+                    print("Result:", divide(num1, num2))
+        elif choice == '7':
+            pyttsx3.speak("Enter the base number, x")
+            num1 = float(input("Enter the base number (x): "))
+            pyttsx3.speak("Enter the exponent, n")
+            num2 = float(input("Enter the exponent (n): "))
+            pyttsx3.speak(f"The Result is {exponential(num1, num2)}")
+            print("Result:", exponential(num1, num2))
+        elif choice == '8':
+            plt = plot_quadratic()
+            pyttsx3.speak("Quadratic Equation Plotted")
+            plt.show()
+        elif choice == '9':
+            plt = plot_linear()
+            pyttsx3.speak("Linear Equation Plotted")
+            plt.show()
+        else:
+            print("Invalid Input")
+            pyttsx3.speak("Invalid Input")
     else:
-        print("Invalid Input")
-        pyttsx3.speak("Invalid Input")
-
-else:
-    print("Enter a valid response from the dropdown")
-    pyttsx3.speak("Enter a valid response from the dropdown")
+        print("Enter a valid response from the dropdown")
+        pyttsx3.speak("Enter a valid response from the dropdown")
