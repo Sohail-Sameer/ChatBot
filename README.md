@@ -4,4 +4,4 @@ E.R.I.C\
 Efficient\
 Response\
 Interactive\
-Companion\
+Companion
