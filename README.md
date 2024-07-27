@@ -1,4 +1,4 @@
-E.R.I.C. - Efficient Response Interactive Companion
+E.R.I.C. - Efficient Response Interactive Companion\
 Description:
 
 E.R.I.C. is a versatile interactive tool designed to assist with various tasks through voice interaction and graphical outputs. It includes features for performing mathematical operations, plotting equations, and opening web links. The key functionalities are:
