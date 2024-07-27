@@ -38,28 +38,27 @@ def exponential(x, n):
 
 
 def plot_quadratic():
+    pyttsx3.speak("Enter coefficient a")
     a = float(input("Enter coefficient a: "))
+    pyttsx3.speak("Enter coefficient b")
     b = float(input("Enter coefficient b: "))
-    c = float(input("Enter coefficient c: "))
+    pyttsx3.speak("Enter constant c")
+    c = float(input("Enter constant c: "))
 
     x = np.linspace(-10, 10, 400)
-    y = a * x**2 + b * x + c
+    y = a * x ** 2 + b * x + c
 
-    discriminant = b**2 - 4*a*c
+    discriminant = b ** 2 - 4 * a * c
 
     if discriminant >= 0:
-        # Real roots
-        x1 = (-b + np.sqrt(discriminant)) / (2*a)
-        x2 = (-b - np.sqrt(discriminant)) / (2*a)
+        x1 = (-b + np.sqrt(discriminant)) / (2 * a)
+        x2 = (-b - np.sqrt(discriminant)) / (2 * a)
         y1, y2 = 0, 0
     else:
-        # Complex roots
-        x1 = (-b + np.sqrt(discriminant)) / (2*a)
-        x2 = (-b - np.sqrt(discriminant)) / (2*a)
+        x1 = (-b + np.sqrt(discriminant)) / (2 * a)
+        x2 = (-b - np.sqrt(discriminant)) / (2 * a)
         y1, y2 = np.imag(x1), np.imag(x2)
         x1, x2 = np.real(x1), np.real(x2)
-
-    # x_intercepts = [(x1, 0), (x2, 0)]
 
     plt.plot(x, y, label=f'{a}x^2 + {b}x + {c}')
     plt.scatter([x1, x2], [y1, y2], color='red', label='X-Intercepts')
@@ -74,9 +73,12 @@ def plot_quadratic():
 
 
 def plot_linear():
+    pyttsx3.speak("Enter coefficient a")
     a = float(input("Enter coefficient a: "))
+    pyttsx3.speak("Enter coefficient b")
     b = float(input("Enter coefficient b: "))
-    c = float(input("Enter coefficient c: "))
+    pyttsx3.speak("Enter constant c")
+    c = float(input("Enter constant c: "))
 
     if b != 0:
         m = -a / b
@@ -126,7 +128,6 @@ def random_open_link():
         "g.co/arts/2WST2Pqi1fXRq1kbA"
     ]
 
-    # Open a random link
     link_to_open = random.choice(links)
     webbrowser.open(link_to_open)
     return f"Opening {link_to_open}"
@@ -150,14 +151,12 @@ def open_link():
         webbrowser.open(chatgpt)
         return f"Opening {chatgpt}"
     else:
-        print("Enter a valid response")
         return "Enter a valid response"
 
 
 # Main Program
 print(greet())
 pyttsx3.speak(greet())
-
 
 while True:
     print("Choose the function")
@@ -239,3 +238,10 @@ while True:
     else:
         print("Enter a valid response from the dropdown")
         pyttsx3.speak("Enter a valid response from the dropdown")
+
+    # Ask if the user wants to continue
+    pyttsx3.speak("Do you wish to continue")
+    continue_input = input("Do you wish to continue? (yes/no): ").strip().lower()
+    if continue_input not in ["yes", "y", "yeah"]:
+        pyttsx3.speak("Thank you!")
+        break
