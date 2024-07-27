@@ -25,17 +25,17 @@ E.R.I.C. - Efficient Response Interactive Companion\
 2)Key Features:
 
   Calculator:
-    Perform basic arithmetic and advanced mathematical functions.
+    Perform basic arithmetic and advanced mathematical functions.\
   Plotting:
-    Visualize quadratic and linear equations with interactive input and save the plots as images.
+    Visualize quadratic and linear equations with interactive input and save the plots as images.\
   Web Links:
-    Open predefined or random web links to useful websites.
+    Open predefined or random web links to useful websites.\
   Voice Assistance:
     Enhance user interaction through voice commands and responses.
 
 3)How to Use:
 
-  Run the program.
-  Follow the voice prompts and on-screen instructions to select the desired function.
-  Input the required values or choices as prompted.
-  Continue using or exit based on your preference.
+  Run the program.\
+  Follow the voice prompts and on-screen instructions to select the desired function.\
+  Input the required values or choices as prompted.\
+  Continue using or exit based on your preference.\
