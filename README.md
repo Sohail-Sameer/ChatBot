@@ -1,6 +1,6 @@
 
 # ChatBot
-u text it speaks and does work.........yay\
+this is a chatbot(it speaks).........yay\
 E.R.I.C\
 Efficient\
 Response\
