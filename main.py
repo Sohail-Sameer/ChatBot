@@ -4,6 +4,7 @@ import random
 import pyttsx3
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 
 def add(x, y):
@@ -37,7 +38,18 @@ def exponential(x, n):
     return x ** n
 
 
-def plot_quadratic():
+def get_unique_filename(base_path, base_filename, extension):
+    counter = 1
+    filename = f"{base_filename}{extension}"
+    full_path = os.path.join(base_path, filename)
+    while os.path.exists(full_path):
+        filename = f"{base_filename}_{counter}{extension}"
+        full_path = os.path.join(base_path, filename)
+        counter += 1
+    return full_path
+
+
+def plot_quadratic(save_path):
     pyttsx3.speak("Enter coefficient a")
     a = float(input("Enter coefficient a: "))
     pyttsx3.speak("Enter coefficient b")
@@ -60,7 +72,7 @@ def plot_quadratic():
         y1, y2 = np.imag(x1), np.imag(x2)
         x1, x2 = np.real(x1), np.real(x2)
 
-    plt.plot(x, y, label=f'{a}x^2 + {b}x + {c}')
+    plt.plot(x, y, label=f'{a}x^2 + {b}x + c')
     plt.scatter([x1, x2], [y1, y2], color='red', label='X-Intercepts')
     plt.text(x1, y1, f'({round(x1, 2)}, {round(y1, 2)})', fontsize=15, ha='left', color='green')
     plt.text(x2, y2, f'({round(x2, 2)}, {round(y2, 2)})', fontsize=15, ha='right', color='green')
@@ -69,10 +81,14 @@ def plot_quadratic():
     plt.ylabel("y")
     plt.grid(True)
     plt.legend()
-    return plt
+
+    # Save plot to the specified path
+    unique_filename = get_unique_filename(save_path, 'quadratic_plot', '.png')
+    plt.savefig(unique_filename)
+    plt.close()
 
 
-def plot_linear():
+def plot_linear(saved_path):
     pyttsx3.speak("Enter coefficient a")
     a = float(input("Enter coefficient a: "))
     pyttsx3.speak("Enter coefficient b")
@@ -103,7 +119,11 @@ def plot_linear():
     plt.ylabel("y")
     plt.grid(True)
     plt.legend()
-    return plt
+
+    # Save plot to the specified path
+    unique_filename = get_unique_filename(saved_path, 'linear_plot', '.png')
+    plt.savefig(unique_filename)
+    plt.close()
 
 
 def greet():
@@ -158,12 +178,21 @@ def open_link():
 print(greet())
 pyttsx3.speak(greet())
 
+# Define the path to the folder on the desktop
+desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
+saved_path = os.path.join(desktop, 'Plots')
+
+# Create the folder if it doesn't exist
+if not os.path.exists(saved_path):
+    os.makedirs(saved_path)
+
 while True:
     print("Choose the function")
     pyttsx3.speak("Choose the function")
     print("1) Open Link")
     print("2) Open Random Link")
     print("3) Calculator")
+    pyttsx3.speak("Enter numeric choice")
     usr_input = input("Enter 1/2/3: ")
 
     if usr_input == '1':
@@ -225,13 +254,11 @@ while True:
             pyttsx3.speak(f"The Result is {exponential(num1, num2)}")
             print("Result:", exponential(num1, num2))
         elif choice == '8':
-            plt = plot_quadratic()
-            pyttsx3.speak("Quadratic Equation Plotted")
-            plt.show()
+            plot_quadratic(saved_path)
+            pyttsx3.speak("Quadratic Equation Plotted and Saved")
         elif choice == '9':
-            plt = plot_linear()
-            pyttsx3.speak("Linear Equation Plotted")
-            plt.show()
+            plot_linear(saved_path)
+            pyttsx3.speak("Linear Equation Plotted and Saved")
         else:
             print("Invalid Input")
             pyttsx3.speak("Invalid Input")
@@ -239,9 +266,9 @@ while True:
         print("Enter a valid response from the dropdown")
         pyttsx3.speak("Enter a valid response from the dropdown")
 
-    # Ask if the user wants to continue
-    pyttsx3.speak("Do you wish to continue")
+    pyttsx3.speak("Do you wish to continue?")
     continue_input = input("Do you wish to continue? (yes/no): ").strip().lower()
     if continue_input not in ["yes", "y", "yeah"]:
         pyttsx3.speak("Thank you!")
+        print("Thank you!")
         break
