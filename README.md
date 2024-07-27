@@ -38,4 +38,4 @@ E.R.I.C. - Efficient Response Interactive Companion\
   Run the program.\
   Follow the voice prompts and on-screen instructions to select the desired function.\
   Input the required values or choices as prompted.\
-  Continue using or exit based on your preference.\
+  Continue using or exit based on your preference.
