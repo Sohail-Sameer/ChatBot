@@ -49,3 +49,4 @@ E.R.I.C. is a versatile interactive tool designed to assist with various tasks t
 2. Follow the voice prompts and on-screen instructions to select the desired function.
 3. Input the required values or choices as prompted.
 4. Continue using or exit based on your preference.
+5. More updates to be posted soon.
