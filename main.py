@@ -5,6 +5,11 @@ import pyttsx3
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import math
+
+
+engine = pyttsx3.init()
+engine.setProperty('rate', 150)
 
 
 def add(x, y):
@@ -174,6 +179,18 @@ def open_link():
         return "Enter a valid response"
 
 
+def factorial(n):
+    return math.factorial(n)
+
+
+def permutations(n, r):
+    return factorial(n) / factorial(n - r)
+
+
+def combinations(n, r):
+    return factorial(n) / (factorial(r) * factorial(n - r))
+
+
 # Main Program
 print(greet())
 pyttsx3.speak(greet())
@@ -216,9 +233,12 @@ while True:
         print("7. Exponential")
         print("8. Plot Quadratic Equation")
         print("9. Linear Equation in Two Variables")
+        print("10. Permutations")
+        print("11. Combinations")
+        print("12. Logarithmic values")
 
         pyttsx3.speak("Enter your choice")
-        choice = input("Enter choice (1/2/3/4/5/6/7/8/9): ")
+        choice = input("Enter choice (1 to 12): ")
 
         if choice in ('1', '2', '3', '4', '5', '6'):
             pyttsx3.speak("Enter your first number")
@@ -259,6 +279,27 @@ while True:
         elif choice == '9':
             plot_linear(saved_path)
             pyttsx3.speak("Linear Equation Plotted and Saved")
+        elif choice == '10':
+            pyttsx3.speak("Enter the total number of items, n")
+            n = int(input("Enter the total number of items (n): "))
+            pyttsx3.speak("Enter the number of items to choose, r")
+            r = int(input("Enter the number of items to choose (r): "))
+            pyttsx3.speak(f"The number of permutations is {permutations(n, r)}")
+            print("Number of permutations:", permutations(n, r))
+        elif choice == '11':
+            pyttsx3.speak("Enter the total number of items, n")
+            n = int(input("Enter the total number of items (n): "))
+            pyttsx3.speak("Enter the number of items to choose, r")
+            r = int(input("Enter the number of items to choose (r): "))
+            pyttsx3.speak(f"The number of combinations is {combinations(n, r)}")
+            print("Number of combinations:", combinations(n, r))
+        elif choice == '12':
+            pyttsx3.speak("Enter the value of x")
+            f = float(input("Enter the value of x: "))
+            pyttsx3.speak("Enter the value for the base")
+            g = float(input("Enter the value of base(g): "))
+            print(math.log(f, g))
+            pyttsx3.speak(f"log {f} base {g} is {math.log(f, g)}")
         else:
             print("Invalid Input")
             pyttsx3.speak("Invalid Input")
@@ -272,3 +313,4 @@ while True:
         pyttsx3.speak("Thank you!")
         print("Thank you!")
         break
+
