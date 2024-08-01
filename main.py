@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import math
+from fractions import Fraction
+import sympy as sp
 
 
 engine = pyttsx3.init()
@@ -191,6 +193,14 @@ def combinations(n, r):
     return factorial(n) / (factorial(r) * factorial(n - r))
 
 
+def differentiate(degree, variable, coefficients):
+    """Differentiates a polynomial of given degree with respect to a specified variable."""
+    x = sp.Symbol(variable)
+    polynomial = sum(coeff * x**exp for exp, coeff in enumerate(coefficients[::-1]))
+    derivative = sp.diff(polynomial, x)
+    return derivative
+
+
 # Main Program
 print(greet())
 pyttsx3.speak(greet())
@@ -236,9 +246,10 @@ while True:
         print("10. Permutations")
         print("11. Combinations")
         print("12. Logarithmic values")
+        print("13. Differentiation")
 
         pyttsx3.speak("Enter your choice")
-        choice = input("Enter choice (1 to 12): ")
+        choice = input("Enter choice (1 to 13): ")
 
         if choice in ('1', '2', '3', '4', '5', '6'):
             pyttsx3.speak("Enter your first number")
@@ -300,6 +311,26 @@ while True:
             g = float(input("Enter the value of base(g): "))
             print(math.log(f, g))
             pyttsx3.speak(f"log {f} base {g} is {math.log(f, g)}")
+        elif choice == '13':
+            pyttsx3.speak("Enter the degree of the polynomial")
+            degree = int(input("Enter the degree of the polynomial: "))
+            pyttsx3.speak("Enter the variable (e.g., x)")
+            variable = input("Enter the variable (e.g., x): ").strip()
+            coefficients = []
+            for i in range(degree, -1, -1):
+                pyttsx3.speak(f"Enter the coefficient for x^{i} (as a fraction p/q or integer)")
+                coeff_input = input(f"Enter the coefficient for x^{i} (e.g., 3/4 or 2): ").strip()
+                try:
+                    coefnt = Fraction(coeff_input)  # Convert input to Fraction
+                except ValueError:
+                    pyttsx3.speak("Invalid fraction format. Please enter as p/q.")
+                    coefnt = Fraction(input(f"Enter the coefficient for x^{i} again: ").strip())
+                coefficients.append(coefnt)
+
+            derivative = differentiate(degree, variable, coefficients)
+            pyttsx3.speak(f"The derivative is {derivative}")
+            print("Derivative:", derivative)
+            coefficients.append(coefnt)
         else:
             print("Invalid Input")
             pyttsx3.speak("Invalid Input")
