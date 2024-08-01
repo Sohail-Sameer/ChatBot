@@ -9,9 +9,51 @@ import math
 from fractions import Fraction
 import sympy as sp
 
-
+# Initialize the pyttsx3 engine
 engine = pyttsx3.init()
 engine.setProperty('rate', 150)
+
+# Define the path to the folder on the desktop
+desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
+saved_path = os.path.join(desktop, 'Plots')
+
+# Create the folder if it doesn't exist
+if not os.path.exists(saved_path):
+    os.makedirs(saved_path)
+
+# Logging function
+
+
+def write_log(content):
+    # Get the current time and date
+    now = datetime.datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    current_date = now.strftime("%Y-%m-%d")
+
+    # Create a unique filename based on the current time
+    log_filename = f"log_{current_date}_{current_time.replace(':', '-')}.txt"
+    log_filepath = os.path.join(saved_path, log_filename)
+
+    # Write content to the log file
+    with open(log_filepath, 'w') as log_file:
+        log_file.write(f"[Time] {current_time}\n")
+        log_file.write(f"[Date] {current_date}\n")
+        log_file.write("######\n")
+        log_file.write(content)
+        log_file.write("\n######\n")
+
+    # Manage log files (keep only the most recent 3)
+    manage_logs()
+
+# Function to manage log files
+
+
+def manage_logs():
+    log_files = [f for f in os.listdir(saved_path) if f.startswith("log_") and f.endswith(".txt")]
+    if len(log_files) > 3:
+        log_files.sort(key=lambda x: os.path.getctime(os.path.join(saved_path, x)))
+        for log_file in log_files[:-3]:
+            os.remove(os.path.join(saved_path, log_file))
 
 
 def add(x, y):
@@ -200,148 +242,181 @@ def differentiate(degree, variable, coefficients):
     derivative = sp.diff(polynomial, x)
     return derivative
 
-
 # Main Program
-print(greet())
-pyttsx3.speak(greet())
+log_content = ""
 
-# Define the path to the folder on the desktop
-desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
-saved_path = os.path.join(desktop, 'Plots')
+try:
+    greeting = greet()
+    log_content += f"Greeting: {greeting}\n"
+    print(greeting)
+    pyttsx3.speak(greeting)
 
-# Create the folder if it doesn't exist
-if not os.path.exists(saved_path):
-    os.makedirs(saved_path)
+    while True:
+        log_content += "Displaying main menu\n"
+        print("Choose the function")
+        pyttsx3.speak("Choose the function")
+        print("1) Open Link")
+        print("2) Open Random Link")
+        print("3) Calculator")
+        pyttsx3.speak("Enter numeric choice")
+        usr_input = input("Enter 1/2/3: ")
+        log_content += f"User input: {usr_input}\n"
 
-while True:
-    print("Choose the function")
-    pyttsx3.speak("Choose the function")
-    print("1) Open Link")
-    print("2) Open Random Link")
-    print("3) Calculator")
-    pyttsx3.speak("Enter numeric choice")
-    usr_input = input("Enter 1/2/3: ")
-
-    if usr_input == '1':
-        pyttsx3.speak(open_link())
-    elif usr_input == '2':
-        pyttsx3.speak("Do you want to open a random link?")
-        user_input = input("Do you want to open a random link? (yes/no): ").strip().lower()
-        if user_input in ["yes", "y", "yeah"]:
-            pyttsx3.speak(random_open_link())
-        else:
-            print("Okay sir, no link will be opened.")
-            pyttsx3.speak("Okay sir, no link will be opened.")
-    elif usr_input == '3':
-        print("Select operation:")
-        print("1. Add")
-        print("2. Subtract")
-        print("3. Multiply")
-        print("4. Divide")
-        print("5. Square")
-        print("6. Cube")
-        print("7. Exponential")
-        print("8. Plot Quadratic Equation")
-        print("9. Linear Equation in Two Variables")
-        print("10. Permutations")
-        print("11. Combinations")
-        print("12. Logarithmic values")
-        print("13. Differentiation")
-
-        pyttsx3.speak("Enter your choice")
-        choice = input("Enter choice (1 to 13): ")
-
-        if choice in ('1', '2', '3', '4', '5', '6'):
-            pyttsx3.speak("Enter your first number")
-            num1 = float(input("Enter first number: "))
-            if choice in ('5', '6'):
-                if choice == '5':
-                    pyttsx3.speak(f"The Result is {square(num1)}")
-                    print("Result:", square(num1))
-                else:
-                    pyttsx3.speak(f"The Result is {cube(num1)}")
-                    print("Result:", cube(num1))
+        if usr_input == '1':
+            result = open_link()
+            pyttsx3.speak(result)
+            log_content += f"Action: {result}\n"
+        elif usr_input == '2':
+            pyttsx3.speak("Do you want to open a random link?")
+            user_input = input("Do you want to open a random link? (yes/no): ").strip().lower()
+            log_content += f"User input: {user_input}\n"
+            if user_input in ["yes", "y", "yeah"]:
+                result = random_open_link()
+                pyttsx3.speak(result)
+                log_content += f"Action: {result}\n"
             else:
-                pyttsx3.speak("Enter your second number")
-                num2 = float(input("Enter second number: "))
+                message = "Okay sir, no link will be opened."
+                print(message)
+                pyttsx3.speak(message)
+                log_content += f"Action: {message}\n"
+        elif usr_input == '3':
+            log_content += "Displaying calculator menu\n"
+            print("Select operation:")
+            print("1. Add")
+            print("2. Subtract")
+            print("3. Multiply")
+            print("4. Divide")
+            print("5. Square")
+            print("6. Cube")
+            print("7. Exponential")
+            print("8. Plot Quadratic Equation")
+            print("9. Linear Equation in Two Variables")
+            print("10. Permutations")
+            print("11. Combinations")
+            print("12. Logarithmic values")
+            print("13. Differentiation")
+            pyttsx3.speak("Enter your choice")
+            choice = input("Enter choice (1 to 13): ")
+            log_content += f"User choice: {choice}\n"
 
-                if choice == '1':
-                    pyttsx3.speak(f"The Result is {add(num1, num2)}")
-                    print("Result:", add(num1, num2))
-                elif choice == '2':
-                    pyttsx3.speak(f"The Result is {subtract(num1, num2)}")
-                    print("Result:", subtract(num1, num2))
-                elif choice == '3':
-                    pyttsx3.speak(f"The Result is {multiply(num1, num2)}")
-                    print("Result:", multiply(num1, num2))
-                elif choice == '4':
-                    pyttsx3.speak(f"The Result is {divide(num1, num2)}")
-                    print("Result:", divide(num1, num2))
-        elif choice == '7':
-            pyttsx3.speak("Enter the base number, x")
-            num1 = float(input("Enter the base number (x): "))
-            pyttsx3.speak("Enter the exponent, n")
-            num2 = float(input("Enter the exponent (n): "))
-            pyttsx3.speak(f"The Result is {exponential(num1, num2)}")
-            print("Result:", exponential(num1, num2))
-        elif choice == '8':
-            plot_quadratic(saved_path)
-            pyttsx3.speak("Quadratic Equation Plotted and Saved")
-        elif choice == '9':
-            plot_linear(saved_path)
-            pyttsx3.speak("Linear Equation Plotted and Saved")
-        elif choice == '10':
-            pyttsx3.speak("Enter the total number of items, n")
-            n = int(input("Enter the total number of items (n): "))
-            pyttsx3.speak("Enter the number of items to choose, r")
-            r = int(input("Enter the number of items to choose (r): "))
-            pyttsx3.speak(f"The number of permutations is {permutations(n, r)}")
-            print("Number of permutations:", permutations(n, r))
-        elif choice == '11':
-            pyttsx3.speak("Enter the total number of items, n")
-            n = int(input("Enter the total number of items (n): "))
-            pyttsx3.speak("Enter the number of items to choose, r")
-            r = int(input("Enter the number of items to choose (r): "))
-            pyttsx3.speak(f"The number of combinations is {combinations(n, r)}")
-            print("Number of combinations:", combinations(n, r))
-        elif choice == '12':
-            pyttsx3.speak("Enter the value of x")
-            f = float(input("Enter the value of x: "))
-            pyttsx3.speak("Enter the value for the base")
-            g = float(input("Enter the value of base(g): "))
-            print(math.log(f, g))
-            pyttsx3.speak(f"log {f} base {g} is {math.log(f, g)}")
-        elif choice == '13':
-            pyttsx3.speak("Enter the degree of the polynomial")
-            degree = int(input("Enter the degree of the polynomial: "))
-            pyttsx3.speak("Enter the variable (e.g., x)")
-            variable = input("Enter the variable (e.g., x): ").strip()
-            coefficients = []
-            for i in range(degree, -1, -1):
-                pyttsx3.speak(f"Enter the coefficient for x^{i} (as a fraction p/q or integer)")
-                coeff_input = input(f"Enter the coefficient for x^{i} (e.g., 3/4 or 2): ").strip()
-                try:
-                    coefnt = Fraction(coeff_input)  # Convert input to Fraction
-                except ValueError:
-                    pyttsx3.speak("Invalid fraction format. Please enter as p/q.")
-                    coefnt = Fraction(input(f"Enter the coefficient for x^{i} again: ").strip())
-                coefficients.append(coefnt)
+            if choice in ('1', '2', '3', '4', '5', '6'):
+                pyttsx3.speak("Enter your first number")
+                num1 = float(input("Enter first number: "))
+                log_content += f"First number: {num1}\n"
+                if choice in ('5', '6'):
+                    if choice == '5':
+                        result = square(num1)
+                    else:
+                        result = cube(num1)
+                    pyttsx3.speak(f"The Result is {result}")
+                    print("Result:", result)
+                    log_content += f"Result: {result}\n"
+                else:
+                    pyttsx3.speak("Enter your second number")
+                    num2 = float(input("Enter second number: "))
+                    log_content += f"Second number: {num2}\n"
+                    if choice == '1':
+                        result = add(num1, num2)
+                    elif choice == '2':
+                        result = subtract(num1, num2)
+                    elif choice == '3':
+                        result = multiply(num1, num2)
+                    elif choice == '4':
+                        result = divide(num1, num2)
+                    pyttsx3.speak(f"The Result is {result}")
+                    print("Result:", result)
+                    log_content += f"Result: {result}\n"
+            elif choice == '7':
+                pyttsx3.speak("Enter the base number, x")
+                num1 = float(input("Enter the base number (x): "))
+                pyttsx3.speak("Enter the exponent, n")
+                num2 = float(input("Enter the exponent (n): "))
+                result = exponential(num1, num2)
+                pyttsx3.speak(f"The Result is {result}")
+                print("Result:", result)
+                log_content += f"Exponential result: {result}\n"
+            elif choice == '8':
+                plot_quadratic(saved_path)
+                pyttsx3.speak("Quadratic Equation Plotted and Saved")
+                log_content += "Quadratic Equation Plotted and Saved\n"
+            elif choice == '9':
+                plot_linear(saved_path)
+                pyttsx3.speak("Linear Equation Plotted and Saved")
+                log_content += "Linear Equation Plotted and Saved\n"
+            elif choice == '10':
+                pyttsx3.speak("Enter the total number of items, n")
+                n = int(input("Enter the total number of items (n): "))
+                pyttsx3.speak("Enter the number of items to choose, r")
+                r = int(input("Enter the number of items to choose (r): "))
+                result = permutations(n, r)
+                pyttsx3.speak(f"The number of permutations is {result}")
+                print("Number of permutations:", result)
+                log_content += f"Number of permutations: {result}\n"
+            elif choice == '11':
+                pyttsx3.speak("Enter the total number of items, n")
+                n = int(input("Enter the total number of items (n): "))
+                pyttsx3.speak("Enter the number of items to choose, r")
+                r = int(input("Enter the number of items to choose (r): "))
+                result = combinations(n, r)
+                pyttsx3.speak(f"The number of combinations is {result}")
+                print("Number of combinations:", result)
+                log_content += f"Number of combinations: {result}\n"
+            elif choice == '12':
+                pyttsx3.speak("Enter the value of x")
+                f = float(input("Enter the value of x: "))
+                pyttsx3.speak("Enter the value for the base")
+                g = float(input("Enter the value of base(g): "))
+                result = math.log(f, g)
+                print(result)
+                pyttsx3.speak(f"log {f} base {g} is {result}")
+                log_content += f"Log result: {result}\n"
+            elif choice == '13':
+                pyttsx3.speak("Enter the degree of the polynomial")
+                degree = int(input("Enter the degree of the polynomial: "))
+                pyttsx3.speak("Enter the variable (e.g., x)")
+                variable = input("Enter the variable (e.g., x): ").strip()
+                coefficients = []
+                for i in range(degree, -1, -1):
+                    pyttsx3.speak(f"Enter the coefficient for x^{i} (as a fraction p/q or integer)")
+                    coeff_input = input(f"Enter the coefficient for x^{i} (e.g., 3/4 or 2): ").strip()
+                    try:
+                        coefnt = Fraction(coeff_input)  # Convert input to Fraction
+                    except ValueError:
+                        pyttsx3.speak("Invalid fraction format. Please enter as p/q.")
+                        coefnt = Fraction(input(f"Enter the coefficient for x^{i} again: ").strip())
+                    coefficients.append(coefnt)
 
-            derivative = differentiate(degree, variable, coefficients)
-            pyttsx3.speak(f"The derivative is {derivative}")
-            print("Derivative:", derivative)
-            coefficients.append(coefnt)
+                derivative = differentiate(degree, variable, coefficients)
+                pyttsx3.speak(f"The derivative is {derivative}")
+                print("Derivative:", derivative)
+                log_content += f"Derivative: {derivative}\n"
+            else:
+                error_message = "Invalid Input"
+                print(error_message)
+                pyttsx3.speak(error_message)
+                log_content += f"Error: {error_message}\n"
         else:
-            print("Invalid Input")
-            pyttsx3.speak("Invalid Input")
-    else:
-        print("Enter a valid response from the dropdown")
-        pyttsx3.speak("Enter a valid response from the dropdown")
+            error_message = "Invalid main menu choice"
+            print(error_message)
+            pyttsx3.speak(error_message)
+            log_content += f"Error: {error_message}\n"
 
-    pyttsx3.speak("Do you wish to continue?")
-    continue_input = input("Do you wish to continue? (yes/no): ").strip().lower()
-    if continue_input not in ["yes", "y", "yeah"]:
-        pyttsx3.speak("Thank you!")
-        print("Thank you!")
-        break
+        pyttsx3.speak("Do you wish to continue?")
+        continue_input = input("Do you wish to continue? (yes/no): ").strip().lower()
+        log_content += f"Continue input: {continue_input}\n"
+        if continue_input not in ["yes", "y", "yeah"]:
+            break
 
+    pyttsx3.speak("Thank you!")
+    print("Thank you!")
+    log_content += "Session ended\n"
+
+except Exception as e:
+    error_message = f"An error occurred: {e}"
+    print(error_message)
+    pyttsx3.speak(error_message)
+    log_content += f"Error: {error_message}\n"
+
+finally:
+    # Write the session's log content to a log file
+    write_log(log_content)
